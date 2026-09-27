@@ -1,11 +1,10 @@
 # IXIdeal Install Script for Windows
-param(
-    [string]$PluginName = "ix-ideal"
-)
+# Claude Code 只识别 ~/.claude/skills/<name>/SKILL.md 形式的用户级 skill
+$SkillName = "idea"
+$InstallDir = Join-Path $env:USERPROFILE ".claude\skills\$SkillName"
+$LegacyDir = Join-Path $env:USERPROFILE ".claude\plugins\ix-ideal"
 
-$InstallDir = Join-Path $env:USERPROFILE ".claude\plugins\$PluginName"
-
-Write-Host "Installing $PluginName to $InstallDir..." -ForegroundColor Cyan
+Write-Host "Installing skill '$SkillName' to $InstallDir..." -ForegroundColor Cyan
 
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $RepoDir = Split-Path -Parent $ScriptDir
@@ -14,11 +13,7 @@ $RepoDir = Split-Path -Parent $ScriptDir
 if (Test-Path (Join-Path $RepoDir ".git")) {
     # 从本地仓库安装
     New-Item -ItemType Directory -Force -Path $InstallDir | Out-Null
-    Copy-Item -Recurse -Force (Join-Path $RepoDir "skills") $InstallDir
-    Copy-Item -Force (Join-Path $RepoDir "package.json") $InstallDir
-    if (Test-Path (Join-Path $RepoDir "CLAUDE.md")) {
-        Copy-Item -Force (Join-Path $RepoDir "CLAUDE.md") $InstallDir
-    }
+    Copy-Item -Recurse -Force (Join-Path $RepoDir "skills\$SkillName\*") $InstallDir
     Write-Host "Installed from local repo: $RepoDir" -ForegroundColor Green
 } else {
     # 从 GitHub 下载安装
@@ -31,17 +26,22 @@ if (Test-Path (Join-Path $RepoDir ".git")) {
 
     $ExtractedDir = Get-ChildItem $TmpDir | Select-Object -First 1 -ExpandProperty FullName
     New-Item -ItemType Directory -Force -Path $InstallDir | Out-Null
-    Copy-Item -Recurse -Force (Join-Path $ExtractedDir "skills") $InstallDir
-    Copy-Item -Force (Join-Path $ExtractedDir "package.json") $InstallDir
+    Copy-Item -Recurse -Force (Join-Path $ExtractedDir "skills\$SkillName\*") $InstallDir
 
     Remove-Item -Recurse -Force $TmpDir, $ZipPath
     Write-Host "Downloaded and installed from GitHub" -ForegroundColor Green
 }
 
+# 清理旧版脚本装到 plugins 目录下的残留（该位置不会被 Claude Code 加载）
+if (Test-Path $LegacyDir) {
+    Remove-Item -Recurse -Force $LegacyDir
+    Write-Host "Removed legacy install: $LegacyDir" -ForegroundColor Yellow
+}
+
 Write-Host ""
-Write-Host "OK $PluginName installed successfully!" -ForegroundColor Green
+Write-Host "OK skill '$SkillName' installed successfully!" -ForegroundColor Green
 Write-Host ""
-Write-Host "Usage in Claude Code:"
+Write-Host "Usage in Claude Code (restart Claude Code first):"
 Write-Host "  /idea              - Start from scratch (AI guides you)"
 Write-Host "  /idea my-idea.md   - Analyze existing template"
 Write-Host ""

@@ -132,7 +132,7 @@ IXIdeal/
   CLAUDE.md                    # Claude Code 说明
   skills/
     idea/
-      idea.md                  # Claude Code Skill（/idea 命令）
+      SKILL.md                 # Claude Code Skill（/idea 命令，安装到 ~/.claude/skills/idea/）
     idea-codex/
       idea-codex.md            # Codex CLI 适配版
   install/
@@ -146,12 +146,12 @@ IXIdeal/
 
 **Unix/macOS：**
 ```bash
-rm -rf ~/.claude/plugins/ix-ideal
+rm -rf ~/.claude/skills/idea
 ```
 
 **Windows：**
 ```powershell
-Remove-Item -Recurse -Force "$env:USERPROFILE\.claude\plugins\ix-ideal"
+Remove-Item -Recurse -Force "$env:USERPROFILE\.claude\skills\idea"
 ```
 
 ---

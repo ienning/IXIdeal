@@ -7,7 +7,7 @@ platform: codex
 # Idea to Project Skill（Codex 版）
 
 > **平台说明**：本 Skill 适用于 OpenAI Codex CLI。
-> 如果你使用 Claude Code，请使用 `skills/idea/idea.md`。
+> 如果你使用 Claude Code，请使用 `skills/idea/SKILL.md`。
 
 ## 前置要求
 
