@@ -1,0 +1,12 @@
+{
+  "name": "ix-ideal",
+  "version": "1.0.0",
+  "description": "Idea to Project — 想法落地引导工具。帮助用户通过结构化模板和 AI 对话，从想法出发生成完整项目启动包。",
+  "keywords": ["claude-code", "skill", "idea", "project", "ai", "template"],
+  "author": "Ienning",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ienning/IXIdeal"
+  }
+}
