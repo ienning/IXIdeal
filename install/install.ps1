@@ -6,11 +6,12 @@ $LegacyDir = Join-Path $env:USERPROFILE ".claude\plugins\ix-ideal"
 
 Write-Host "Installing skill '$SkillName' to $InstallDir..." -ForegroundColor Cyan
 
-$ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
-$RepoDir = Split-Path -Parent $ScriptDir
+# 通过 irm | iex 执行时没有脚本路径，直接走 GitHub 下载
+$ScriptPath = $MyInvocation.MyCommand.Path
+$RepoDir = if ($ScriptPath) { Split-Path -Parent (Split-Path -Parent $ScriptPath) } else { $null }
 
 # 检测安装方式（本地 vs GitHub）
-if (Test-Path (Join-Path $RepoDir ".git")) {
+if ($RepoDir -and (Test-Path (Join-Path $RepoDir ".git"))) {
     # 从本地仓库安装
     New-Item -ItemType Directory -Force -Path $InstallDir | Out-Null
     Copy-Item -Recurse -Force (Join-Path $RepoDir "skills\$SkillName\*") $InstallDir
@@ -21,7 +22,7 @@ if (Test-Path (Join-Path $RepoDir ".git")) {
     $TmpDir = Join-Path $env:TEMP "ix-ideal-install"
     $ZipPath = Join-Path $env:TEMP "ix-ideal.zip"
 
-    Invoke-WebRequest -Uri "https://github.com/ienning/ix-ideal/archive/refs/heads/main.zip" -OutFile $ZipPath
+    Invoke-WebRequest -Uri "https://github.com/ienning/IXIdeal/archive/refs/heads/main.zip" -OutFile $ZipPath
     Expand-Archive -Path $ZipPath -DestinationPath $TmpDir -Force
 
     $ExtractedDir = Get-ChildItem $TmpDir | Select-Object -First 1 -ExpandProperty FullName

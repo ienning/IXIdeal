@@ -20,8 +20,8 @@ multi_agent = true
 
 ## 触发方式
 
-- `/idea-codex` — 从零开始，进入 Phase A 对话引导
-- `/idea-codex <文件路径>` — 读取已有模板，智能路由
+- `$idea-codex` — 从零开始，进入 Phase A 对话引导
+- `$idea-codex <文件路径>` — 读取已有模板，智能路由
 
 ## 工具映射
 

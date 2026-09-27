@@ -26,21 +26,21 @@
 **Unix/macOS：**
 ```bash
 # 从 GitHub 一键安装
-curl -fsSL https://raw.githubusercontent.com/ienning/ix-ideal/main/install/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/ienning/IXIdeal/main/install/install.sh | bash
 
 # 或克隆后本地安装
-git clone https://github.com/ienning/ix-ideal.git
-cd ix-ideal && bash install/install.sh
+git clone https://github.com/ienning/IXIdeal.git
+cd IXIdeal && bash install/install.sh
 ```
 
 **Windows（PowerShell）：**
 ```powershell
 # 从 GitHub 一键安装
-irm https://raw.githubusercontent.com/ienning/ix-ideal/main/install/install.ps1 | iex
+irm https://raw.githubusercontent.com/ienning/IXIdeal/main/install/install.ps1 | iex
 
 # 或克隆后本地安装
-git clone https://github.com/ienning/ix-ideal.git
-cd ix-ideal; .\install\install.ps1
+git clone https://github.com/ienning/IXIdeal.git
+cd IXIdeal; .\install\install.ps1
 ```
 
 **2. 使用**
@@ -79,16 +79,16 @@ multi_agent = true
 **2. 安装 Skill**
 
 ```bash
-# 复制 Codex Skill 到 Codex 插件目录
-mkdir -p ~/.codex/plugins/ix-ideal/skills/idea-codex
-cp skills/idea-codex/idea-codex.md ~/.codex/plugins/ix-ideal/skills/idea-codex/
+# Codex 从 ~/.agents/skills/<名称>/SKILL.md 加载用户级 Skill
+mkdir -p ~/.agents/skills/idea-codex
+cp skills/idea-codex/SKILL.md ~/.agents/skills/idea-codex/
 ```
 
 **3. 使用**
 
 ```
-/idea-codex
-/idea-codex my-idea.md
+$idea-codex
+$idea-codex my-idea.md
 ```
 
 ---
@@ -134,7 +134,7 @@ IXIdeal/
     idea/
       SKILL.md                 # Claude Code Skill（/idea 命令，安装到 ~/.claude/skills/idea/）
     idea-codex/
-      idea-codex.md            # Codex CLI 适配版
+      SKILL.md                 # Codex CLI 适配版（安装到 ~/.agents/skills/idea-codex/）
   install/
     install.sh                 # Unix/macOS 一键安装
     install.ps1                # Windows 一键安装

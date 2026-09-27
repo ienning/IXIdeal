@@ -9,9 +9,11 @@ LEGACY_DIR="${HOME}/.claude/plugins/ix-ideal"
 echo "Installing skill '${SKILL_NAME}' to ${INSTALL_DIR}..."
 
 # 检测安装方式
-if command -v git &> /dev/null && [ -d "$(dirname "$0")/../.git" ]; then
+# 通过 curl | bash 执行时 BASH_SOURCE 为空（$0 是 "bash"），不能用它推导仓库目录，直接走 GitHub 下载
+SCRIPT_PATH="${BASH_SOURCE[0]:-}"
+if [ -n "${SCRIPT_PATH}" ] && [ -f "${SCRIPT_PATH}" ] && [ -d "$(dirname "${SCRIPT_PATH}")/../.git" ]; then
     # 从本地仓库安装
-    REPO_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+    REPO_DIR="$(cd "$(dirname "${SCRIPT_PATH}")/.." && pwd)"
     mkdir -p "${INSTALL_DIR}"
     cp -r "${REPO_DIR}/skills/${SKILL_NAME}/." "${INSTALL_DIR}/"
     echo "Installed from local repo: ${REPO_DIR}"
@@ -19,7 +21,7 @@ else
     # 从 GitHub 安装（curl）
     echo "Downloading from GitHub..."
     TMP_DIR=$(mktemp -d)
-    curl -fsSL "https://github.com/ienning/ix-ideal/archive/refs/heads/main.tar.gz" | tar -xz -C "${TMP_DIR}" --strip-components=1
+    curl -fsSL "https://github.com/ienning/IXIdeal/archive/refs/heads/main.tar.gz" | tar -xz -C "${TMP_DIR}" --strip-components=1
     mkdir -p "${INSTALL_DIR}"
     cp -r "${TMP_DIR}/skills/${SKILL_NAME}/." "${INSTALL_DIR}/"
     rm -rf "${TMP_DIR}"
